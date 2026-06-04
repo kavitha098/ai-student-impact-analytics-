@@ -1,0 +1,50 @@
+import streamlit as st
+
+from src.model_loader import (
+    load_burnout_model
+)
+
+model = load_burnout_model()
+
+st.subheader("Burnout Risk Predictor")
+
+ai_hours = st.slider(
+    "Weekly AI Hours",
+    0,
+    40,
+    10
+)
+
+study_hours = st.slider(
+    "Study Hours",
+    0,
+    40,
+    15
+)
+
+dependency = st.slider(
+    "AI Dependency",
+    1,
+    5,
+    3
+)
+
+anxiety = st.slider(
+    "Exam Anxiety",
+    1,
+    10,
+    5
+)
+
+if st.button("Predict"):
+
+    prediction = model.predict([[
+        ai_hours,
+        study_hours,
+        dependency,
+        anxiety
+    ]])
+
+    st.success(
+        f"Predicted Burnout Risk: {prediction[0]}"
+    )
