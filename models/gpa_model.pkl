@@ -1,0 +1,51 @@
+import streamlit as st
+
+from src.model_loader import (
+    load_gpa_model
+)
+
+model = load_gpa_model()
+
+st.subheader("GPA Predictor")
+
+ai_hours = st.number_input(
+    "Weekly AI Hours",
+    0,
+    50,
+    10
+)
+
+study_hours = st.number_input(
+    "Study Hours",
+    0,
+    50,
+    15
+)
+
+prompt_skill = st.slider(
+    "Prompt Skill Score",
+    1,
+    10,
+    5
+)
+
+dependency = st.slider(
+    "AI Dependency",
+    1,
+    5,
+    3
+)
+
+if st.button("Predict GPA"):
+
+    prediction = model.predict([[
+        ai_hours,
+        study_hours,
+        prompt_skill,
+        dependency
+    ]])
+
+    st.metric(
+        "Expected GPA",
+        round(float(prediction[0]), 2)
+    )
